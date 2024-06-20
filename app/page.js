@@ -13,23 +13,56 @@ export default function Home() {
   useEffect(() => {
     const newTodoList = JSON.parse(localStorage.getItem("todo")) || [];
     setTodoList(newTodoList);
-  }, [])
+  }, []);
   const addToDo = (item) => {
     const newTodoList = [...todoList, item];
     setTodoList(newTodoList);
     localStorage.setItem("todo", JSON.stringify(newTodoList));
+  };
+
+  const deleteToDo = (item) => {
+    const newTodoList = todoList.filter((e) => item.key !== e.key);
+    setTodoList(newTodoList);
+    localStorage.setItem("todo", JSON.stringify(newTodoList));
+  };
+
+  const markToDo = (item) => {
+    const newTodoList = todoList.map((e) => {
+      if (item.key === e.key) {
+        e.isMarked = !e.isMarked;
+      }
+      return e;
+    });
+    setTodoList(newTodoList);
+    localStorage.setItem("todo", JSON.stringify(newTodoList));
   }
 
-  return (
-    <div >
-      <NextUIProvider>
-        <div className="p-5 w-[70%] h-[700px] m-auto relative">
-          <Header></Header>
-          <ToDoList todoList={todoList}></ToDoList>
-          <AddToDo addToDo={addToDo}></AddToDo>
-        </div>
-      </NextUIProvider>
-    </div>
+  const finishToDo = (item) => {
+    const newTodoList = todoList.map((e) => {
+      if (item.key === e.key) {
+        e.isFinished = !e.isFinished;
+      }
+      return e;
+    });
+    setTodoList(newTodoList);
+    localStorage.setItem("todo", JSON.stringify(newTodoList));
+  }
+
+    return (
+      <div >
+        <NextUIProvider>
+          <div className="p-5 w-[70%] h-[700px] m-auto relative">
+            <Header></Header>
+            <ToDoList todoList={todoList}
+              deleteToDo={deleteToDo}
+              markToDo={markToDo}
+              finishToDo={finishToDo}
+              ></ToDoList>
+            <AddToDo addToDo={addToDo}></AddToDo>
+          </div>
+        </NextUIProvider>
+      </div>
     
-  );
-}
+    );
+  };
+
