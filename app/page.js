@@ -6,9 +6,12 @@ import Header from "./components/Header";
 import ToDoList from "./components/ToDoList ";
 import AddToDo from "./components/AddToDo";
 import { useState, useEffect } from "react";
+import TagList from "./components/TagList";
 export default function Home() {
 
   const [todoList, setTodoList] = useState([]);
+
+  const [typeList, setTypeList] = useState(['项目1','项目2','项目3']);
 
   useEffect(() => {
     const newTodoList = JSON.parse(localStorage.getItem("todo")) || [];
@@ -49,16 +52,27 @@ export default function Home() {
   }
 
     return (
-      <div >
+      <div>
         <NextUIProvider>
-          <div className="p-5 w-[70%] h-[700px] m-auto relative">
+          <div className="p-5 w-[70%] h-[95vh] m-auto relative">
             <Header></Header>
-            <ToDoList todoList={todoList}
-              deleteToDo={deleteToDo}
-              markToDo={markToDo}
-              finishToDo={finishToDo}
-              ></ToDoList>
-            <AddToDo addToDo={addToDo}></AddToDo>
+            <div className="mt-[20px]">
+              <TagList tags={typeList}></TagList>
+            </div>
+            <AddToDo addToDo={addToDo} typeList={typeList}></AddToDo>
+            <div className="w-[100%] flex flex-wrap justify-around">
+              {typeList.map((e, index) => <ToDoList
+                key={index}
+                title={e}
+                todoList={todoList}
+                deleteToDo={deleteToDo}
+                markToDo={markToDo}
+                finishToDo={finishToDo}
+              ></ToDoList>)}
+              <i className="w-[48%] mt-[25px]" ></i>
+              <i className="w-[48%] mt-[25px]"></i>
+            </div>
+            
           </div>
         </NextUIProvider>
       </div>
